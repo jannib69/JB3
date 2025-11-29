@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+jb3/__init__.py
+jb3/ljse.py
+jb3/nasdaq.py
+jb3.egg-info/PKG-INFO
+jb3.egg-info/SOURCES.txt
+jb3.egg-info/dependency_links.txt
+jb3.egg-info/requires.txt
+jb3.egg-info/top_level.txt
