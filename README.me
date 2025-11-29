@@ -1,0 +1,43 @@
+# JB3
+
+**JB3** is a Python package providing unified access to **LJSE** and **NASDAQ** financial data. It allows easy download, cleaning, and pivoting of historical stock data for analysis and research.
+
+## Features
+	•	Download historical NASDAQ and LJSE stock data
+	•	Clean and format numeric columns (close, open, high, low, volume)
+	•	Pivot data by ticker for easy analysis
+	•	Flexible filtering by exchange, market cap, analyst rating, sector, region, and country
+
+## Installation
+
+Run the following command to install JB3:
+
+```bash
+pip install jb3
+```
+
+## Usage
+
+Import the module and download data as follows:
+
+```python
+from jb3 import nasdaq
+
+Download NASDAQ data for AAPL
+
+df = nasdaq.download_ticker_data(“AAPL”, clean=True, pivot_col=“close”)
+print(df.head())
+```
+
+## Parameters for Screeners
+	•	**Exchange**: NASDAQ, Global Select, Global Market, Capital Market, ADR, NYSE, AMEX
+	•	**Market Cap**: Mega (>$200B), Large ($10B-$200B), Medium ($2B-$10B), Small ($300M-$2B), Micro ($50M-$300M), Nano (<$50M)
+	•	**Analyst Rating**: Strong Buy, Hold, Buy, Sell, Strong Sell
+	•	**Sector**: Technology, Telecommunications, Healthcare, Financials, Real Estate, Consumer Discretionary, Consumer Staples, Industrials, Basic Materials, Energy, Utilities
+	•	**Region**: Africa, Asia, Australia and South Pacific, Caribbean, Europe, Middle East, North America, South America
+	•	**Country**: United States, Israel, Malaysia, United Kingdom, Netherlands, China, Canada, South Korea, Guernsey, Singapore, Taiwan, Switzerland, Belgium, Cayman Islands, Norway, Brazil, Ireland, Australia
+
+
+## LJSE Documentation
+
+https://pypi.org/project/LJSE/
