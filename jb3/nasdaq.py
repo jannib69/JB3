@@ -96,11 +96,6 @@ def download_ticker_data(
 
     return df
 
-
-import requests
-import pandas as pd
-
-
 def get_nasdaq_screener(
         limit: int = 25,
         exchange: str | list[str] | None = None,
@@ -205,8 +200,7 @@ def get_nasdaq_screener(
             "Chrome/143.0.0.0 Safari/537.36"
         )
     }
-    print("URL:", url)
-    print("Params:", params)
+
     r = requests.get(url, headers=headers, params=params, timeout=10)
     r.raise_for_status()
     data = r.json()
