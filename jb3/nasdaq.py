@@ -103,36 +103,89 @@ import pandas as pd
 
 def get_nasdaq_screener(
         limit: int = 25,
-        exchange: str = None,
-        marketcap: str = None,
-        recommendation: str = None,
-        sector: str = None,
-        region: str = None,
-        country: str | None = None
-
+        exchange: str | list[str] | None = None,
+        marketcap: str | list[str] | None = None,
+        recommendation: str | list[str] | None = None,
+        sector: str | list[str] | None = None,
+        region: str | list[str] | None = None,
+        country: str | list[str] | None = None
 ) -> pd.DataFrame:
     """
-    NASDAQ screener data
+    NASDAQ screener data (supports single value or list of values per filter).
 
-    Exchange: NASDAQ, Global Select, Global Market, Capital Market, ADR, NYSE, AMEX
-    Market Cap: Mega, Large, Medium, Small, Micro, Nano
-    Analyst Rating: Strong Buy, Hold, Buy, Sell, Strong Sell
-    Sector: Technology, Telecommunications, Healthcare, Financials, Real Estate,
-            Consumer Discretionary, Consumer Staples, Industrials, Basic Materials, Energy, Utilities
-    Region: Africa, Asia, Australia and South Pacific, Caribbean, Europe, Middle East, North America, South America
-    Country: United States, Israel, Malaysia, United Kingdom, Netherlands, China, Canada,
-             South Korea, Guernsey, Singapore, Taiwan, Switzerland, Belgium, Cayman Islands,
-             Norway, Brazil, Ireland, Australia
+    Exchange:
+    - NASDAQ, ADR, NYSE, AMEX
+
+    Market Cap:
+    - Mega, Large, Medium, Small, Micro, Nano
+
+    Analyst Rating:
+    - Strong Buy, Hold, Buy, Sell, Strong Sell
+
+    Sector:
+    - Technology
+    - Telecommunications
+    - Health care
+    - Financials
+    - Real Estate
+    - Consumer Discretionary
+    - Consumer Staples
+    - Industrials
+    - Basic Materials
+    - Energy
+    - Utilities
+
+    Region:
+    - Africa
+    - Asia
+    - Australia and South Pacific
+    - Caribbean
+    - Europe
+    - Middle East
+    - North America
+    - South America
+
+    Country:
+    - China
+    - United States
+    - Canada
+    - France
+    - Switzerland
+    - Taiwan
+    - United Kingdom
+    - Ireland
+    - Luxembourg
+    - Cayman Islands
+    - Hong Kong
+    - Israel
+    - Netherlands
+    - Denmark
+    - Germany
+    - Australia
+    - Malaysia
+    - Peru
+    - Singapore
+    - Costa Rica
+    - Belgium
+    - Italy
+    - Spain
+    - Jersey
+    - Curacao
+    - Guernsey
+    - India
+    - Japan
+
     """
+
     url = "https://api.nasdaq.com/api/screener/stocks?"
     params = {"tableonly": "false", "limit": limit}
 
-    if exchange: params["exchange"] = exchange
-    if marketcap: params["marketcap"] = marketcap
-    if recommendation: params["recommendation"] = recommendation
-    if sector: params["sector"] = sector
-    if region: params["region"] = region
-    if country: params["country"] = country  # Lahko več držav: "United States|China"
+    if exchange:       params["exchange"] = _normalize_multi(exchange)
+    if marketcap:      params["marketcap"] = _normalize_multi(marketcap)
+    if recommendation: params["recommendation"] = _normalize_multi(recommendation)
+    if sector:         params["sector"] = _normalize_multi(sector)
+    if region:         params["region"] = _normalize_multi(region)
+    if country:        params["country"] = _normalize_multi(country)
 
     headers = {
         "accept": "application/json, text/plain, */*",
@@ -152,7 +205,8 @@ def get_nasdaq_screener(
             "Chrome/143.0.0.0 Safari/537.36"
         )
     }
-
+    print("URL:", url)
+    print("Params:", params)
     r = requests.get(url, headers=headers, params=params, timeout=10)
     r.raise_for_status()
     data = r.json()
@@ -160,3 +214,8 @@ def get_nasdaq_screener(
     rows = data.get("data", {}).get("table", {}).get("rows", [])
     df = pd.DataFrame(rows)
     return df
+
+def _normalize_multi(val):
+    if isinstance(val, str):
+        val = [val]
+    return "|".join(v.lower().replace(" ", "_") for v in val)
