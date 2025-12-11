@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jb3"
-version = "0.1.3"
+version = "0.1.4"
 description = "JB3 package – unified access to LJSE, FRED and NASDAQ financial data"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -16,6 +16,9 @@ authors = [
 
 dependencies = [
     "pandas",
+    "numpy",
+    "matplotlib",
+    "seaborn",
     "requests",
     "tqdm",
     "ljse"
